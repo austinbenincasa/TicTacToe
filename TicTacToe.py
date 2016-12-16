@@ -1,5 +1,5 @@
 import pygame
-
+import time
 
 class Player:
     """
@@ -39,7 +39,17 @@ class Board:
             [3,5,7]
         ]
         self.avalible_move = {1,2,3,4,5,6,7,8,9}
-        self.click_map = []
+        self.click_map = [
+            (150,150),
+            (250,150),
+            (350,150),
+            (150,250),
+            (250,250),
+            (350,250),
+            (150,350),
+            (250,350),
+            (350,350)
+        ]
         self.turn_count = 0
 
 
@@ -92,7 +102,7 @@ class Board:
 def Start():
 
     # Initilizing game definitions
-    size = [500, 500]
+    size = [500, 600]
     white = 255, 255, 255
     black = 0, 0, 0
     blue = 0, 0, 255
@@ -152,29 +162,36 @@ def Start():
                     # place player piece on the game board
                     player_que[player_turn].add_piece(space)
                     color = player_que[player_turn].color
-
-                    pygame.draw.circle(screen,color,(x,y),25,3)
+                    loc = game_board.click_map[space-1]
+                    pygame.draw.circle(screen,color,loc,25,0)
                     if 9 >= game_board.turn_count >= 4:
                         win = game_board.check_win(player_move.piece_loc)
                         if win == True:
-                            print(player_que[player_turn].name + " has won!")
+                            outtxt = player_que[player_turn].name + " has won!"
+                            out = title_font.render(outtxt,True, black)
                             done = True
                     if player_turn == 0:
                         player_turn = 1
                         ply_2 = ply_font.render(Player2.name,True, black)
                         ply_1 = ply_font.render(Player1.name,True, red)
+                        pygame.display.update()
+
                     elif player_turn == 1:
                         player_turn = 0
                         ply_1 = ply_font.render(Player1.name,True, black)
                         ply_2 = ply_font.render(Player2.name,True, blue)
+                        pygame.display.update()
                     game_board.turn_count = game_board.turn_count + 1
                     if game_board.turn_count == 9 and win == False:
-                        print("Cats Game!")
+                        out = title_font.render("Cats game!",True, black)
                         done = True
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit(0)
             pygame.display.flip()
+    screen.blit(out, (145, 500))
+    pygame.display.flip()
+    time.sleep(5)
 
 if __name__ == "__main__":
     Start()
