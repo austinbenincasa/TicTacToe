@@ -164,12 +164,14 @@ def Start():
                     color = player_que[player_turn].color
                     loc = game_board.click_map[space-1]
                     pygame.draw.circle(screen,color,loc,25,0)
+                    # checks for a win
                     if 9 >= game_board.turn_count >= 4:
                         win = game_board.check_win(player_move.piece_loc)
                         if win == True:
                             outtxt = player_que[player_turn].name + " has won!"
                             out = title_font.render(outtxt,True, black)
                             done = True
+                    # change players turn update piece
                     if player_turn == 0:
                         player_turn = 1
                         ply_2 = ply_font.render(Player2.name,True, black)
